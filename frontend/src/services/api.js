@@ -5,15 +5,16 @@ function normalizeApiRoot(url) {
   return `${trimmed}/api`;
 }
 
-function getBaseUrl() {
+// Production (Vercel): set `VITE_API_URL` to your Render API origin, e.g. https://xxx.onrender.com
+// (exposed as import.meta.env.VITE_API_URL). Dev: omit it — Vite proxies `/api` to the backend.
+function apiBase() {
   const fromEnv = import.meta.env.VITE_API_URL?.trim();
   if (fromEnv) return normalizeApiRoot(fromEnv);
-  // Same-origin /api: Vite dev proxy in development; in production, serve the
-  // built app and API from one host (see server.js) or set VITE_API_URL.
-  return "/api";
+  if (import.meta.env.DEV) return "/api";
+  throw new Error(
+    "VITE_API_URL is not set. Add it in Vercel environment variables (your Render API URL, e.g. https://xxx.onrender.com).",
+  );
 }
-
-export const BASE_URL = getBaseUrl();
 
 const getToken = () => localStorage.getItem("token");
 
@@ -38,15 +39,14 @@ const handleResponse = async (res) => {
     if (!res.ok) {
       throw httpError(
         text?.slice(0, 120) ||
-          `Server error (${res.status}). Is the API running on the same PORT as in .env?`,
+          `Server error (${res.status}). Check VITE_API_URL and that the API is running.`,
         res.status,
       );
     }
   }
   if (!res.ok) {
     throw httpError(
-      data.message ||
-        `Request failed (${res.status}). Start the API: npm run server`,
+      data.message || `Request failed (${res.status}).`,
       res.status,
     );
   }
@@ -61,8 +61,8 @@ async function apiFetch(url, options = {}) {
     if (e.status) throw e;
     const err = new Error(
       import.meta.env.DEV
-        ? "Cannot reach the API. Run the backend (npm run server) while using the Vite dev server, or use npm run dev:all."
-        : "Cannot reach the API. Deploy the backend on the same host as this app (see server.js), or build with VITE_API_URL set to your API base URL.",
+        ? "Cannot reach the API. Start the backend from /backend (npm run dev) while using the Vite dev server, or run npm run dev:all from the repo root."
+        : "Cannot reach the API. Confirm VITE_API_URL on Vercel matches your Render API URL and that CORS FRONTEND_URL on Render includes this site.",
     );
     err.status = 0;
     throw err;
@@ -72,44 +72,44 @@ async function apiFetch(url, options = {}) {
 
 export const authAPI = {
   signup: (name, email, password) =>
-    apiFetch(`${BASE_URL}/auth/signup`, {
+    apiFetch(`${apiBase()}/auth/signup`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ name, email, password }),
     }),
 
   login: (email, password) =>
-    apiFetch(`${BASE_URL}/auth/login`, {
+    apiFetch(`${apiBase()}/auth/login`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ email, password }),
     }),
 
   forgotPassword: (email) =>
-    apiFetch(`${BASE_URL}/auth/forgot-password`, {
+    apiFetch(`${apiBase()}/auth/forgot-password`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ email }),
     }),
 
   resetPassword: (token, password) =>
-    apiFetch(`${BASE_URL}/auth/reset-password/${encodeURIComponent(token)}`, {
+    apiFetch(`${apiBase()}/auth/reset-password/${encodeURIComponent(token)}`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ password }),
     }),
 
-  getMe: () => apiFetch(`${BASE_URL}/auth/me`, { headers: authHeaders() }),
+  getMe: () => apiFetch(`${apiBase()}/auth/me`, { headers: authHeaders() }),
 
   updateProfile: (data) =>
-    apiFetch(`${BASE_URL}/auth/update-profile`, {
+    apiFetch(`${apiBase()}/auth/update-profile`, {
       method: "PUT",
       headers: authHeaders(),
       body: JSON.stringify(data),
     }),
 
   changePassword: (currentPassword, newPassword) =>
-    apiFetch(`${BASE_URL}/auth/change-password`, {
+    apiFetch(`${apiBase()}/auth/change-password`, {
       method: "PUT",
       headers: authHeaders(),
       body: JSON.stringify({ currentPassword, newPassword }),
@@ -119,30 +119,30 @@ export const authAPI = {
 export const productsAPI = {
   getAll: (search = "") => {
     const url = search
-      ? `${BASE_URL}/products?search=${encodeURIComponent(search)}`
-      : `${BASE_URL}/products`;
+      ? `${apiBase()}/products?search=${encodeURIComponent(search)}`
+      : `${apiBase()}/products`;
     return apiFetch(url, { headers: authHeaders() });
   },
 
   getStats: () =>
-    apiFetch(`${BASE_URL}/products/stats`, { headers: authHeaders() }),
+    apiFetch(`${apiBase()}/products/stats`, { headers: authHeaders() }),
 
   create: (productData) =>
-    apiFetch(`${BASE_URL}/products`, {
+    apiFetch(`${apiBase()}/products`, {
       method: "POST",
       headers: authHeaders(),
       body: JSON.stringify(productData),
     }),
 
   createBulk: (productsArray) =>
-    apiFetch(`${BASE_URL}/products/bulk`, {
+    apiFetch(`${apiBase()}/products/bulk`, {
       method: "POST",
       headers: authHeaders(),
       body: JSON.stringify({ products: productsArray }),
     }),
 
   buy: (id, quantity, customerName = "Walk-in Customer") =>
-    apiFetch(`${BASE_URL}/products/${id}/buy`, {
+    apiFetch(`${apiBase()}/products/${id}/buy`, {
       method: "POST",
       headers: authHeaders(),
       body: JSON.stringify({ quantity, customerName }),
@@ -150,20 +150,20 @@ export const productsAPI = {
 };
 
 export const invoicesAPI = {
-  getAll: () => apiFetch(`${BASE_URL}/invoices`, { headers: authHeaders() }),
+  getAll: () => apiFetch(`${apiBase()}/invoices`, { headers: authHeaders() }),
 
   updateStatus: (id, status) =>
-    apiFetch(`${BASE_URL}/invoices/${id}/status`, {
+    apiFetch(`${apiBase()}/invoices/${id}/status`, {
       method: "PUT",
       headers: authHeaders(),
       body: JSON.stringify({ status }),
     }),
 
   delete: (id) =>
-    apiFetch(`${BASE_URL}/invoices/${id}`, {
+    apiFetch(`${apiBase()}/invoices/${id}`, {
       method: "DELETE",
       headers: authHeaders(),
     }),
 };
 
-export { getToken, authHeaders, handleResponse };
+export { getToken, authHeaders, handleResponse, apiBase as getBaseUrl };

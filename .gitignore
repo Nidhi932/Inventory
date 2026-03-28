@@ -1,5 +1,15 @@
-# Node modules
+# Dependencies
 node_modules/
 
-# Environment variables
+# Environment (never commit secrets)
 .env
+.env.local
+.env.*.local
+
+# Build output
+frontend/dist/
+backend/dist/
+
+# Logs / OS
+*.log
+.DS_Store

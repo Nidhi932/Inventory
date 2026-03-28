@@ -4,7 +4,7 @@ const connectDB = async () => {
   const uri = process.env.MONGO_URI;
   if (!uri || typeof uri !== "string" || !uri.trim()) {
     const err = new Error(
-      "MONGO_URI is missing. Add it to your .env file in the project root.",
+      "MONGO_URI is missing. Add it to backend/.env (or set the env var on Render).",
     );
     console.error(`${err.message}`);
     throw err;

@@ -1,7 +1,5 @@
-require("dotenv").config();
+require("dotenv").config({ path: require("path").join(__dirname, ".env") });
 
-const path = require("path");
-const fs = require("fs");
 const express = require("express");
 const cors = require("cors");
 const connectDB = require("./config/db");
@@ -14,20 +12,24 @@ const invoiceRoutes = require("./routes/invoiceRoutes");
 
 const app = express();
 
+const normalizeOrigin = (o) => o.replace(/\/$/, "");
 const extraOrigins = (process.env.FRONTEND_URL || "")
   .split(",")
-  .map((s) => s.trim())
+  .map((s) => normalizeOrigin(s.trim()))
   .filter(Boolean);
 const frontendOrigins = [
   ...extraOrigins,
   "http://localhost:5173",
   "http://127.0.0.1:5173",
 ];
+
 app.use(
   cors({
     origin: (origin, callback) => {
       if (!origin) return callback(null, true);
-      if (frontendOrigins.includes(origin)) return callback(null, true);
+      if (frontendOrigins.includes(normalizeOrigin(origin))) {
+        return callback(null, true);
+      }
       callback(null, false);
     },
     credentials: true,
@@ -52,21 +54,12 @@ app.get("/api/health", (req, res) => {
   });
 });
 
-const distPath = path.join(__dirname, "dist");
-const distIndex = path.join(distPath, "index.html");
-if (fs.existsSync(distIndex)) {
-  app.use(express.static(distPath));
-}
-
 app.use((req, res) => {
   if (req.originalUrl.startsWith("/api")) {
     return res.status(404).json({
       success: false,
       message: `Route ${req.originalUrl} not found`,
     });
-  }
-  if (fs.existsSync(distIndex)) {
-    return res.sendFile(distIndex);
   }
   res.status(404).type("text/plain").send("Not found");
 });
@@ -80,7 +73,7 @@ const PORT = Number(process.env.PORT) || 5001;
 async function start() {
   if (!process.env.JWT_SECRET?.trim()) {
     console.error("");
-    console.error("JWT_SECRET is missing in");
+    console.error("JWT_SECRET is missing in backend/.env");
     console.error("");
     process.exit(1);
   }
@@ -90,7 +83,7 @@ async function start() {
   } catch {
     console.error("");
     console.error(
-      "Fix your .env: set MONGO_URI to a valid MongoDB connection string.",
+      "Fix backend/.env: set MONGO_URI to a valid MongoDB connection string.",
     );
     console.error("");
     process.exit(1);
