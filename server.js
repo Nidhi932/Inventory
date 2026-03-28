@@ -1,5 +1,7 @@
 require("dotenv").config();
 
+const path = require("path");
+const fs = require("fs");
 const express = require("express");
 const cors = require("cors");
 const connectDB = require("./config/db");
@@ -12,10 +14,14 @@ const invoiceRoutes = require("./routes/invoiceRoutes");
 
 const app = express();
 
+const extraOrigins = (process.env.FRONTEND_URL || "")
+  .split(",")
+  .map((s) => s.trim())
+  .filter(Boolean);
 const frontendOrigins = [
-  process.env.FRONTEND_URL || "http://localhost:5173",
-  "http://127.0.0.1:5173",
+  ...extraOrigins,
   "http://localhost:5173",
+  "http://127.0.0.1:5173",
 ];
 app.use(
   cors({
@@ -46,11 +52,23 @@ app.get("/api/health", (req, res) => {
   });
 });
 
+const distPath = path.join(__dirname, "dist");
+const distIndex = path.join(distPath, "index.html");
+if (fs.existsSync(distIndex)) {
+  app.use(express.static(distPath));
+}
+
 app.use((req, res) => {
-  res.status(404).json({
-    success: false,
-    message: `Route ${req.originalUrl} not found`,
-  });
+  if (req.originalUrl.startsWith("/api")) {
+    return res.status(404).json({
+      success: false,
+      message: `Route ${req.originalUrl} not found`,
+    });
+  }
+  if (fs.existsSync(distIndex)) {
+    return res.sendFile(distIndex);
+  }
+  res.status(404).type("text/plain").send("Not found");
 });
 
 app.use(errorHandler);

@@ -122,7 +122,6 @@
     grid-template-columns: 1fr 1fr;
   }
 
-  /* Match .page mobile padding (10px); wider negative margins caused horizontal scroll */
   .dashboard {
     margin: -20px -10px;
     padding: 20px 16px 88px;

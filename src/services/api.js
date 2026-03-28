@@ -8,9 +8,9 @@ function normalizeApiRoot(url) {
 function getBaseUrl() {
   const fromEnv = import.meta.env.VITE_API_URL?.trim();
   if (fromEnv) return normalizeApiRoot(fromEnv);
-  if (import.meta.env.DEV) return "/api";
-  const port = import.meta.env.VITE_API_PORT || "5001";
-  return `http://localhost:${port}/api`;
+  // Same-origin /api: Vite dev proxy in development; in production, serve the
+  // built app and API from one host (see server.js) or set VITE_API_URL.
+  return "/api";
 }
 
 export const BASE_URL = getBaseUrl();
@@ -59,7 +59,11 @@ async function apiFetch(url, options = {}) {
     res = await fetch(url, options);
   } catch (e) {
     if (e.status) throw e;
-    const err = new Error("Something went wrong");
+    const err = new Error(
+      import.meta.env.DEV
+        ? "Cannot reach the API. Run the backend (npm run server) while using the Vite dev server, or use npm run dev:all."
+        : "Cannot reach the API. Deploy the backend on the same host as this app (see server.js), or build with VITE_API_URL set to your API base URL.",
+    );
     err.status = 0;
     throw err;
   }
