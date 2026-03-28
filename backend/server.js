@@ -25,14 +25,7 @@ const frontendOrigins = [
 
 app.use(
   cors({
-    origin: (origin, callback) => {
-      if (!origin) return callback(null, true);
-      if (frontendOrigins.includes(normalizeOrigin(origin))) {
-        return callback(null, true);
-      }
-      callback(null, false);
-    },
-    credentials: true,
+    origin: "*",
   }),
 );
 
