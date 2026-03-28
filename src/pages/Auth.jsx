@@ -48,8 +48,18 @@ export default function Auth() {
     setFieldErrors(emptyFieldErrors());
     setSuccess("");
     setApiError("");
+    setShowPassword(false);
     if (next !== "recovery") {
       setRecoveryStep(1);
+    }
+    if (next === "login" || next === "signup") {
+      setForm({
+        name: "",
+        email: "",
+        password: "",
+        confirmPassword: "",
+        otp: "",
+      });
     }
   }
 
@@ -398,11 +408,17 @@ export default function Auth() {
               <header className="auth-header">
                 <h1 className="auth-title">Create your account</h1>
                 <p className="auth-subtitle">
-                  Enter your details to get started.
+                  Enter your details to get started. Use at least 8 characters
+                  for your password.
                 </p>
               </header>
 
-              <form className="auth-form" onSubmit={onSubmit} noValidate>
+              <form
+                className="auth-form"
+                onSubmit={onSubmit}
+                noValidate
+                autoComplete="off"
+              >
                 <div className="auth-field">
                   <label className="auth-label" htmlFor="auth-name">
                     Full name
@@ -416,10 +432,9 @@ export default function Auth() {
                     }
                     name="name"
                     type="text"
-                    autoComplete="name"
+                    autoComplete="off"
                     value={form.name}
                     onChange={onFieldChange}
-                    placeholder="Your name"
                     aria-invalid={fieldErrors.name ? "true" : "false"}
                     aria-describedby={
                       fieldErrors.name ? "auth-name-error" : undefined
@@ -441,10 +456,9 @@ export default function Auth() {
                     }
                     name="email"
                     type="email"
-                    autoComplete="email"
+                    autoComplete="off"
                     value={form.email}
                     onChange={onFieldChange}
-                    placeholder="Example@email.com"
                     aria-invalid={fieldErrors.email ? "true" : "false"}
                     aria-describedby={
                       fieldErrors.email ? "auth-email-signup-error" : undefined
@@ -473,7 +487,6 @@ export default function Auth() {
                       autoComplete="new-password"
                       value={form.password}
                       onChange={onFieldChange}
-                      placeholder="at least 8 characters"
                       aria-invalid={fieldErrors.password ? "true" : "false"}
                       aria-describedby={
                         fieldErrors.password
@@ -514,7 +527,6 @@ export default function Auth() {
                     autoComplete="new-password"
                     value={form.confirmPassword}
                     onChange={onFieldChange}
-                    placeholder="at least 8 characters"
                     aria-invalid={
                       fieldErrors.confirmPassword ? "true" : "false"
                     }
@@ -583,10 +595,9 @@ export default function Auth() {
                     }
                     name="email"
                     type="email"
-                    autoComplete="email"
+                    autoComplete="username"
                     value={form.email}
                     onChange={onFieldChange}
-                    placeholder="Example@email.com"
                     aria-invalid={fieldErrors.email ? "true" : "false"}
                     aria-describedby={
                       fieldErrors.email ? "auth-email-error" : undefined
@@ -615,7 +626,6 @@ export default function Auth() {
                       autoComplete="current-password"
                       value={form.password}
                       onChange={onFieldChange}
-                      placeholder="at least 8 characters"
                       aria-invalid={fieldErrors.password ? "true" : "false"}
                       aria-describedby={
                         fieldErrors.password ? "auth-password-error" : undefined
