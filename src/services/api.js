@@ -59,9 +59,7 @@ async function apiFetch(url, options = {}) {
     res = await fetch(url, options);
   } catch (e) {
     if (e.status) throw e;
-    const err = new Error(
-      "Cannot reach the API. Open a second terminal and run: npm run server — or use one command: npm run dev:all",
-    );
+    const err = new Error("Something went wrong");
     err.status = 0;
     throw err;
   }
