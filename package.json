@@ -1,0 +1,33 @@
+{
+  "name": "inventory-app",
+  "version": "1.0.0",
+  "description": "Inventory & Sales Management — React + Express + MongoDB",
+  "main": "server.js",
+  "scripts": {
+    "dev": "vite",
+    "dev:all": "concurrently -n api,web -c blue,magenta \"npm run server\" \"npm run dev\"",
+    "build": "vite build",
+    "preview": "vite preview",
+    "server": "nodemon server.js",
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "express": "^4.19.2",
+    "jsonwebtoken": "^9.0.2",
+    "mongoose": "^8.4.1",
+    "node-cron": "^3.0.3",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "react-router-dom": "^6.28.0",
+    "recharts": "^2.15.0"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-react": "^4.3.4",
+    "concurrently": "^9.1.2",
+    "nodemon": "^3.1.4",
+    "vite": "^5.4.11"
+  }
+}

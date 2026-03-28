@@ -1,0 +1,163 @@
+.sidebar {
+  width: 220px;
+  background: #242531;
+  height: 100vh;
+  position: fixed;
+  left: 0;
+  top: 0;
+  display: flex;
+  flex-direction: column;
+  z-index: 100;
+}
+
+.sidebar .brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12.5px 12px;
+  border-bottom: 2px solid #424457;
+}
+
+.sidebar .logo {
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.sidebar .logo svg {
+  width: 100%;
+  height: auto;
+}
+
+.sidebar .brand-name {
+  font-family: var(--font-display);
+  font-size: 18px;
+  font-weight: 700;
+  color: white;
+  letter-spacing: -0.3px;
+}
+
+.sidebar .menu {
+  padding: 10px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.sidebar .menu-label {
+  font-size: 11px;
+  font-weight: 600;
+  color: #4b5563;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  padding: 0 12px;
+  margin-bottom: 8px;
+}
+
+.sidebar .navlink {
+  display: flex;
+  align-items: center;
+  height: 30px;
+  gap: 12px;
+  padding: 0px 12px;
+  border-radius: 10px;
+  color: #9ca3af;
+  font-size: 14px;
+  font-weight: 500;
+  transition: all var(--transition);
+}
+
+.sidebar .navlink:hover {
+  background: rgba(255, 255, 255, 0.06);
+  color: white;
+}
+
+.sidebar .navlink.active {
+  background: #424457;
+  color: white;
+}
+
+.sidebar .navlink-ico {
+  font-size: 16px;
+  width: 20px;
+  text-align: center;
+  flex-shrink: 0;
+}
+
+.sidebar .navlink-text {
+  flex: 1;
+}
+
+.sidebar .foot {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px;
+  border-top: 2px solid #424457;
+}
+
+.sidebar .user {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+}
+
+.sidebar .avatar {
+  width: 34px;
+  height: 34px;
+  background: #d1f9f7;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.sidebar .meta {
+  min-width: 0;
+}
+
+.sidebar .meta-name {
+  color: white;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-family: Poppins;
+  font-weight: 400;
+  font-size: 16px;
+  letter-spacing: 0px;
+}
+
+.sidebar .meta-email {
+  font-size: 11px;
+  color: #6b7280;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.sidebar .out {
+  background: none;
+  color: #6b7280;
+  font-size: 18px;
+  padding: 4px;
+  border-radius: 6px;
+  transition: all var(--transition);
+  flex-shrink: 0;
+}
+
+.sidebar .out:hover {
+  color: var(--danger);
+  background: rgba(239, 68, 68, 0.1);
+}
+
+@media (max-width: 900px) {
+  .sidebar {
+    display: none;
+  }
+}

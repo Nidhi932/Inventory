@@ -1,0 +1,126 @@
+@media (min-width: 901px) {
+  .settings {
+    padding: 24px 32px 40px;
+  }
+}
+
+.settings-card {
+  background: #ffffff;
+  border-radius: 16px;
+  padding: 28px 32px 32px;
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.08);
+}
+
+.settings-card__head {
+  margin-bottom: 24px;
+}
+
+.settings-card__tab {
+  display: inline-block;
+  font-size: 1.125rem;
+  font-weight: 700;
+  color: #111827;
+  padding-bottom: 10px;
+  border-bottom: 3px solid #242531;
+}
+
+.settings-card__rule {
+  height: 1px;
+  background: #e5e7eb;
+  margin-top: -1px;
+}
+
+.settings-form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  max-width: 100%;
+}
+
+.settings-row {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  width: 100%;
+  max-width: min(400px, 50vw);
+}
+
+@media (max-width: 600px) {
+  .settings-row {
+    max-width: 100%;
+  }
+}
+
+.settings-label {
+  font-size: 0.9375rem;
+  font-weight: 500;
+  color: #111827;
+}
+
+.settings-row input {
+  padding: 11px 14px;
+  border: 0.94px solid #3e3e3e;
+  border-radius: 10px;
+  font-size: 0.9375rem;
+  color: #111827;
+  background: #fff;
+  width: 100%;
+  max-width: 100%;
+}
+
+.settings-row input:focus {
+  outline: none;
+  border-color: #242531;
+}
+
+.settings-row input:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
+  background: #f9fafb;
+}
+
+.settings-msg {
+  font-size: 0.875rem;
+  margin-top: 16px;
+  padding: 10px 12px;
+  border-radius: 8px;
+}
+
+.settings-msg--err {
+  background: #fee2e2;
+  color: #b91c1c;
+}
+
+.settings-msg--ok {
+  background: #dcfce7;
+  color: #15803d;
+}
+
+.settings-footer {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 28px;
+  padding-top: 8px;
+}
+
+.settings-save {
+  min-width: 120px;
+  padding: 11px 28px;
+  border-radius: 12px;
+  font-size: 0.9375rem;
+  font-weight: 600;
+  color: #ffffff;
+  background: #242531;
+  border: none;
+  cursor: pointer;
+  transition: background 0.15s ease;
+}
+
+.settings-save:hover:not(:disabled) {
+  background: #1a1b24;
+}
+
+.settings-save:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
+}
