@@ -1,4 +1,5 @@
 import { useState, useEffect, useCallback } from "react";
+import { useNavigate } from "react-router-dom";
 import { useApp } from "../context/AppContext";
 import "./Settings.css";
 
@@ -10,7 +11,8 @@ function splitName(full) {
 }
 
 export default function Settings() {
-  const { user, updateUser, changePassword } = useApp();
+  const { user, updateUser, changePassword, logout } = useApp();
+  const navigate = useNavigate();
 
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
@@ -95,6 +97,11 @@ export default function Settings() {
     }
   };
 
+  const handleLogout = () => {
+    logout();
+    navigate("/");
+  };
+
   return (
     <div className="settings fade-in">
       <div className="settings-card">
@@ -152,6 +159,13 @@ export default function Settings() {
         {msg ? <p className="settings-msg settings-msg--ok">{msg}</p> : null}
 
         <div className="settings-footer">
+          <button
+            type="button"
+            className="settings-logout"
+            onClick={handleLogout}
+          >
+            Log out
+          </button>
           <button
             type="button"
             className="settings-save"

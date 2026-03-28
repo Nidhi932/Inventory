@@ -182,12 +182,21 @@ export default function Sidebar() {
       </nav>
 
       <div className="foot">
-        <div className="user">
-          <div className="avatar"></div>
+        <NavLink to="/settings" className="user user-profile-link">
+          <div className="avatar" aria-hidden />
           <div className="meta">
             <p className="meta-name">{user?.name}</p>
+            <p className="meta-email">{user?.email}</p>
           </div>
-        </div>
+        </NavLink>
+        <button
+          type="button"
+          className="sidebar-logout"
+          onClick={handleLogout}
+          aria-label="Log out"
+        >
+          Log out
+        </button>
       </div>
     </aside>
   );

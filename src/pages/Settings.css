@@ -98,9 +98,32 @@
 
 .settings-footer {
   display: flex;
-  justify-content: flex-end;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
   margin-top: 28px;
   padding-top: 8px;
+}
+
+.settings-logout {
+  padding: 11px 20px;
+  border-radius: 12px;
+  font-size: 0.9375rem;
+  font-weight: 600;
+  color: #b91c1c;
+  background: transparent;
+  border: 1px solid #fecaca;
+  cursor: pointer;
+  font-family: inherit;
+  transition:
+    background 0.15s ease,
+    border-color 0.15s ease;
+}
+
+.settings-logout:hover {
+  background: #fef2f2;
+  border-color: #f87171;
 }
 
 .settings-save {

@@ -94,17 +94,50 @@
 .sidebar .foot {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 10px;
   padding: 12px;
   border-top: 2px solid #424457;
 }
 
-.sidebar .user {
+.sidebar .user-profile-link {
   flex: 1;
   display: flex;
   align-items: center;
   gap: 10px;
   min-width: 0;
+  text-decoration: none;
+  color: inherit;
+  border-radius: 10px;
+  padding: 4px;
+  margin: -4px;
+  transition: background 0.15s ease;
+}
+
+.sidebar .user-profile-link:hover {
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.sidebar .sidebar-logout {
+  flex-shrink: 0;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  background: rgba(255, 255, 255, 0.06);
+  color: #e5e7eb;
+  font-size: 12px;
+  font-weight: 600;
+  padding: 7px 14px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-family: inherit;
+  transition:
+    background 0.15s ease,
+    color 0.15s ease,
+    border-color 0.15s ease;
+}
+
+.sidebar .sidebar-logout:hover {
+  background: rgba(239, 68, 68, 0.15);
+  color: #fca5a5;
+  border-color: rgba(239, 68, 68, 0.35);
 }
 
 .sidebar .avatar {
